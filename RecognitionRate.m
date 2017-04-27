@@ -1,5 +1,6 @@
 clc
 clear
+tic
 %{ 
 %% ºòÑ¡±àÂëÆ÷g ±¸·İ
 % g1
@@ -198,3 +199,4 @@ if error_type_bug
 else
     disp('No error type bug!')
 end
+toc
