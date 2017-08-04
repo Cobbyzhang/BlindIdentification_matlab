@@ -10,7 +10,7 @@ tCard = GeneratorCard.tCard;
 TGCard = GeneratorCard.TGCard;
 
 %% 统一定义 (就不要修改后面的代码了)
-selected = 4;
+selected = 10;
 v  = vCard{selected};
 g  = GCard{selected};
 gt = TGCard{selected};
@@ -19,15 +19,15 @@ k  = kCard{selected};
 t  = tCard{selected};
 t_inv  = symmat2num(mod(inv(num2symmat(t)),2));
 tblen = max(max(v)); %最大记忆深度
-testNum = 4;
+testNum = 3;
 error = ones(1,testNum);
-sNum = 30;
+sNum = 6;
 % iter = randi(2^(k*testNum),1);
-matrix = [0 0 0 0 1 1 0 1 1 0;1 1 0 0 1 0 0 1 0 1;1 1 0 0 0 1 0 0 1 1];
-matrix = num2str(matrix);
-matrix(matrix==' ')=[];
-matrix = bin2dec(matrix)+1;
-iter = matrix;
+% matrix = [0 0 0 0 1 1 0 1 1 0;1 1 0 0 1 0 0 1 0 1;1 1 0 0 0 1 0 0 1 1];
+% matrix = num2str(matrix);
+% matrix(matrix==' ')=[];
+% matrix = bin2dec(matrix)+1;
+iter = 11;
 K= 40 * k - sNum;
 b1 = round(rand(1,K));
 firstblc = dec2bin(iter - 1,sNum) - 48;

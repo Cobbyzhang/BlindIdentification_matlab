@@ -11,7 +11,7 @@ tCard = GeneratorCard.tCard;
 TGCard = GeneratorCard.TGCard;
 
 %% 统一定义 (就不要修改后面的代码了)
-selected = 10;
+selected = 11;
 v  = vCard{selected};
 g  = GCard{selected};
 gt = TGCard{selected};
@@ -21,8 +21,8 @@ t  = tCard{selected};
 %sNum = 10 * k; % 同步头长度
 tblen = max(max(v)); %最大记忆深度
 degT = max(max(v)) - min(min(v));
-repetition = 1000;
-testNum = 13;
+repetition = 200000;
+testNum = 20;
 error = ones(1,testNum);
 %% 测试识别率错误率
 % testTimes = 2^k * (2^(k * testNum) - 1)/(2^k - 1);
@@ -38,16 +38,17 @@ for sNum = 1:testNum
         if getappdata(h,'canceling')
             break
         end
-        rN = randi(2^(k * sNum),1)-1;
+        % rN = randi(2^(k * sNum),1)-1;
         K= 40 * k - (sNum * k);
         b1 = round(rand(1,K));
-        firstblc = dec2bin(rN,sNum * k) - 48;
+        % firstblc = dec2bin(rN,sNum * k) - 48;
+        firstblc = round(rand(1,sNum * k));
         b = [firstblc, b1];
         c1 = convenc(b, g);
         c = c1;
         startnum = 1;
-        endnum = randi([K-10,K],1);
-        r = c(startnum:endnum);
+        endnum = randi(10,1);
+        r = c(startnum:end-endnum);
         bt = vitdec(r(1:end-rem(length(r),n)),gt,tblen,'trunc','hard'); %威特比译码
         x = reshape(b(1:sNum * k),k,[]);% 重排一下得到顺序
         xt = reshape(bt(1:numel(x)),size(x));
@@ -85,3 +86,4 @@ plot(ber);
 %     disp('No error type bug!')
 % end
 toc
+save(['data\\G',num2str(selected),'_RecognitionRate_sampling.mat'])

@@ -193,7 +193,13 @@ T11 = num2symmat(tCard{11});
 [v11_test,poly11_test] = symmat2poly(mod(T11*GD11,2));
 TGCard{11} = poly2trellis(v11_test,poly11_test);
 
-
+%g12
+vCard{12} = 3;
+GCard{12} = poly2trellis(vCard{12},[6 5 7]);
+nCard{12} = 3;
+kCard{12} = 1;
+tCard{12} = 1;
+TGCard{12} = poly2trellis(vCard{12},[6 5 7]);
 
 
 

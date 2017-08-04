@@ -200,3 +200,5 @@ else
     disp('No error type bug!')
 end
 toc
+
+save(['data\\G',num2str(selected),'_Enumerate.mat'])

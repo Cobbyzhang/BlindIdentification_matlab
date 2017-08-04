@@ -1,4 +1,4 @@
-function [ T ] = Identify_T( x,xt,v )
+function [ T ] = Identify_T_backup( x,xt,v )
 %% 预处理工作
 v = reshape(v,1,[]);
 [k,~] = size(x);
@@ -22,12 +22,11 @@ for iterv = vMax:-1:vMin  %每次匹配vNum个x,xt向量
         rowTraversal = zeros(1,size(x,2)); %如果是初始还没有一个匹配的xt，初始位全零
     else
         rowTraversal = RowCalculation(xt,Row_certain_xt(1,:),Traversal); %计算遍历矩阵各行对应的向量
-    end
+    end 
     vNumFlag = vNum; % 由于vNum会改变，标记一下作为一个for循环的节点
     for itern = 1:vNumFlag  % 每次找itern个元素的子集
-        if vNum < 0
-            T = zeros(k);
-            return
+        if vNum == 0 
+            break
         end
         Combination = nchoosek(inclusion_xt,itern); % 生成xt尚未匹配的元素的itern元子集 关于行号码
         rowCombination = RowCalculation(xt,Combination); %生成xt尚未匹配的元素的itern元子集 关于向量计算
@@ -35,10 +34,10 @@ for iterv = vMax:-1:vMin  %每次匹配vNum个x,xt向量
             % 把rowTraversal的第iter行加入到rowCombination的每一行，然后在x中寻找是否有完全匹配
             % 多数情况rowNumber是一个全零的向量
             % rowNumber的值对应是rowTravelsal的行号
-            rowNumber = FindRow(bsxfun(@xor,rowCombination,rowTraversal(iterr,:)),x,inclusion_x);
+            rowNumber = FindRow(bsxfun(@xor,rowCombination,rowTraversal(iterr,:)),x,inclusion_x); 
             if any(rowNumber) % 找到了匹配情况
                 % 找到rowNumber中哪些行发生了匹配（行号对应Combination行号）
-                pp = find(rowNumber);
+                pp = find(rowNumber); 
                 %pp(ismember(rowNumber(pp),Row_certain_x)==0)=[];
                 Row_certain_x = [Row_certain_x,rowNumber(pp).']; % 更新Row_certain_x
                 inclusion_x = setdiff(inclusion_x,rowNumber(pp));% 更新inclusion_x
@@ -58,11 +57,11 @@ for iterv = vMax:-1:vMin  %每次匹配vNum个x,xt向量
                 vNum = vNum - numel(pp); % 尚未找到的个数
             end
         end
-        %         if vNum <= 0
-        %             break
-        %         end
+        if vNum <= 0 
+            break
+        end
     end
-    if ~isempty(Row_certain_xt)
+    if ~isempty(Row_certain_xt) 
         inclusion_xt = setdiff(1:k,Row_certain_xt(1,:));% 更新inclusion_xt
         Row_certain_xt(2,:) = Row_certain_xt(2,:) * 2 + 1; % 更新已确定值可以乘的最大系数的
     end
@@ -71,7 +70,6 @@ for iterv = vMax:-1:vMin  %每次匹配vNum个x,xt向量
     end
     if vNum > 0 %某一次运行完没有全部找到vNum个匹配，则出错
         disp('Fail to identify T');
-        T = zeros(k);
         return
     end
 end
