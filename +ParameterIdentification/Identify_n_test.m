@@ -12,7 +12,7 @@ tCard = GeneratorCard.tCard;
 TGCard = GeneratorCard.TGCard;
 
 %% 统一定义 (就不要修改后面的代码了)
-selected = 1;
+selected = 13;
 v  = vCard{selected};
 g  = GCard{selected};
 gt = TGCard{selected};
@@ -22,7 +22,7 @@ t  = tCard{selected};
 %sNum = 10 * k; % 同步头长度
 tblen = max(max(v)); %最大记忆深度
 sNum = 10 * k; % 同步头长度
-errorRate = 0.08;
+errorRate = 0.15 ;
 testNumber = 18;
 %% 生成码字b1 & c1
 K= 30000;
@@ -46,7 +46,7 @@ mostPossibleSolution = zeros(1,testNumber);
 average = zeros(1,testNumber);
 MaxAverRate = zeros(1,testNumber);
 T = zeros(1,testNumber);
-for itern = 6:testNumber
+for itern = 1:testNumber
     R = Tool.reshapeMatrixWithRow(r,itern)';
     % isequal(r(1:numel(R)),reshape(R,1,[]))
     w = zeros(1,2^itern);
@@ -63,13 +63,20 @@ for itern = 6:testNumber
     %mostPossibleSolution = max(max(Y(2:end)));
     disp(['l = ',num2str(itern),': ',num2str(mostPossibleSolution(itern))])
     % disp(mostPossibleSolution)
-%     if itern == 13
-%         stem(Y)
-%     end
+    if itern == 9
+        figure(2)
+        stem(Y,'Marker','none');
+        disp(find(Y==max(Y(2:end))))
+    end
 end
 
 
- stem(T)
+figure(3)
+%stem(T)
+%hold on
+%stem(MaxAverRate,'-r')
+stem(mostPossibleSolution,'-k*')
+
 
 
 

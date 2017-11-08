@@ -202,6 +202,32 @@ tCard{12} = 1;
 TGCard{12} = poly2trellis(vCard{12},[6 5 7]);
 
 
+%g13
+vCard{13} = 7;
+GCard{13} = poly2trellis(vCard{13},[171 131]);
+nCard{13} = 2;
+kCard{13} = 1;
+tCard{13} = 1;
+TGCard{13} = poly2trellis(vCard{13},[171 131]);
+
+
+%g14
+vCard{14} = 4;
+GCard{14} = poly2trellis(vCard{14},[13 15 17]);
+nCard{14} = 3;
+kCard{14} = 1;
+tCard{14} = 1;
+TGCard{14} = poly2trellis(vCard{14},[13 15 17]);
+
+
+%g15
+vCard{15} = 5;
+GCard{15} = poly2trellis(vCard{15},[25 33 37]);
+nCard{15} = 3;
+kCard{15} = 1;
+tCard{15} = 1;
+TGCard{15} = poly2trellis(vCard{15},[25 33 37]);
+
 
 
 %% ´æ´¢
