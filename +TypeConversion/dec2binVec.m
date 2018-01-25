@@ -8,7 +8,7 @@ if nargin < 3
     high_order = 'left';
 end
 
-if ~isnumeric(dec) | (dec < 0 )
+if ~isnumeric(dec) || (dec < 0 )
     error('Input number error!');
 end
 if ~strcmp(high_order,'left') && ~strcmp(high_order,'right')

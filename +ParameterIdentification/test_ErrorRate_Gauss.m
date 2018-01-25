@@ -19,16 +19,25 @@ gt = TGCard{selected};
 n  = nCard{selected};
 k  = kCard{selected};
 t  = tCard{selected};
+
+rowNumber = 200;
+u = sum(v)-numel(v);
+n_alpha = n*floor(u/(n-k)+1);
+gammaOpt = 0.6;
+
+
+
+
 testNumber = 1000;
 
 
 %% 识别率-误码率曲线
 h = waitbar(0,'Please wait...','Name','Recognition Rate','CreateCancelBtn','setappdata(gcbf,''canceling'',1)');
-ErrorSamplingNum = 5;
-Error = zeros(1,ErrorSamplingNum);
-testTimes = ErrorSamplingNum * testNumber;
+ErrorSamplingNum = 6;
+Error = zeros(1,ErrorSamplingNum + 1);
+testTimes = ( ErrorSamplingNum + 1) * testNumber;
 iteration = 50;
-for iterr = 1:ErrorSamplingNum
+for iterr = 0:ErrorSamplingNum
     if getappdata(h,'canceling')
         break
     end
@@ -51,12 +60,17 @@ for iterr = 1:ErrorSamplingNum
         r = c(startnum:endnum);
 
         %识别
-        [n, n_alpha] = ParameterIdentification.identify_n_Gauss(r, 0.6, iteration);
-
-        if n ~= 3 || n_alpha ~= 12
-            Error(iterr) = Error(iterr) + 1;
+        for iter = 1:iteration
+            [n_estimate, n_alpha_estimate] = ParameterIdentification.identify_n_Gauss(r, gammaOpt, 1, rowNumber);
+            if n_estimate == n && n_alpha_estimate == n_alpha
+                break
+            end
         end
-        curr_waitbar = ((iterr-1)*testNumber + itern)/testTimes;
+
+        if n_estimate ~= n || n_alpha_estimate ~= n_alpha
+            Error(iterr + 1) = Error(iterr + 1) + 1;
+        end
+        curr_waitbar = (iterr*testNumber + itern)/testTimes;
         str = ['Please wait...',num2str(100 * curr_waitbar,'%.2f'),'%'];
         waitbar(curr_waitbar,h,str);
     end
@@ -66,9 +80,10 @@ end
 delete(h);
 clear h;
 
-plot(0.01*(1:ErrorSamplingNum),1-Error/testNumber);
-axis([0.01 0.01*ErrorSamplingNum 0 1]);
+th = 0:0.01:0.01*ErrorSamplingNum;
+plot(th,1-Error/testNumber);
+axis([0 0.01*ErrorSamplingNum 0 1]);
 
-save(['data\\C322_Gauss_',num2str(iteration),'_iteration.mat'])
+%save(['+data\\C322_Gauss_',num2str(iteration),'_iteration.mat'])
 
 

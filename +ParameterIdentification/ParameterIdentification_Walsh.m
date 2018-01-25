@@ -12,7 +12,7 @@ tCard = GeneratorCard.tCard;
 TGCard = GeneratorCard.TGCard;
 
 %% 统一定义 
-selected = 13;
+selected = 1;
 v  = vCard{selected};
 g  = GCard{selected};
 gt = TGCard{selected};
@@ -28,8 +28,11 @@ n_alpha = n*floor(u/(n-k)+1);
 
 %% 识别率-误码率曲线
 h = waitbar(0,'Please wait...','Name','Recognition Rate','CreateCancelBtn','setappdata(gcbf,''canceling'',1)');
-ErrorSamplingNum = 10;
+ErrorSamplingNum = 16;
 Error = zeros(1,ErrorSamplingNum+1);
+Errorn = zeros(1,ErrorSamplingNum+1);
+Errork = zeros(1,ErrorSamplingNum+1);
+Erroru = zeros(1,ErrorSamplingNum+1);
 testTimes = (ErrorSamplingNum + 1) * testNumber;
 for iterr = 0:ErrorSamplingNum
     if getappdata(h,'canceling')
@@ -51,9 +54,18 @@ for iterr = 0:ErrorSamplingNum
         r = c(startnum:endnum);
 
         %识别
-        [n_estimate, k_estimate, n_alpha_estimate] = ParameterIdentification.identify_Walsh(r, 0.15);
+        [n_estimate, k_estimate, u_estimate] = ParameterIdentification.identify_Walsh(r, 0.16);
 
-        if n_estimate ~= n || n_alpha_estimate ~= n_alpha || k_estimate ~= k
+        if n_estimate ~= n
+            Errorn(iterr + 1) = Errorn(iterr + 1) + 1;
+        end
+        if u_estimate ~= u
+            Erroru(iterr + 1) = Erroru(iterr + 1) + 1;
+        end
+        if k_estimate ~= k
+            Errork(iterr + 1) = Errork(iterr + 1) + 1;
+        end
+        if n_estimate ~= n || u_estimate ~= u || k_estimate ~= k
             Error(iterr + 1) = Error(iterr + 1) + 1;
         end
         curr_waitbar = ((iterr)*testNumber + itern)/testTimes;
@@ -66,7 +78,12 @@ end
 delete(h);
 clear h;
 
-plot(0.01*(0:ErrorSamplingNum),1-Error/testNumber);
+figure(1)
+hold on
+plot(0.01*(0:ErrorSamplingNum),1-Errorn/testNumber,'k');
+plot(0.01*(0:ErrorSamplingNum),1-Errork/testNumber,'-or');
+plot(0.01*(0:ErrorSamplingNum),1-Erroru/testNumber,'-*g');
+plot(0.01*(0:ErrorSamplingNum),1-Error/testNumber,'b');
 axis([0 0.01*ErrorSamplingNum 0 1]);
 
 

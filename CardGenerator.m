@@ -3,11 +3,14 @@ clear
 %% ºòÑ¡±àÂëÆ÷g
 % g1
 vCard{1} = [2,3];
-GCard{1} = poly2trellis(vCard{1},[3 1 2;4 7 1]);
-TGCard{1} =poly2trellis(vCard{1},[3 1 2;1 4 7]);
+polyCard{1} = [3 1 2;4 7 1];
+GCard{1} = poly2trellis(vCard{1}, polyCard{1});
+TGCard{1} =poly2trellis(vCard{1}, polyCard{1});
 nCard{1} = 3;
 kCard{1} = 2;
 tCard{1} = [1 0;3 1];
+HCard{1} = [17 13 15];
+h1Card{1} = [1 3936];
 %{
 G(D) = 
   +-                                    -+ 
@@ -31,7 +34,8 @@ T(D)G(D) =
 
 %g2
 vCard{2} = [3,3];
-GCard{2} = poly2trellis(vCard{2},[4 6 1;5 1 2]);
+polyCard{2} = [4 6 1;5 1 2];
+GCard{2} = poly2trellis(vCard{2}, polyCard{2});
 TGCard{2} =poly2trellis(vCard{2},[1 7 3;4 6 1]);
 nCard{2} = 3;
 kCard{2} = 2;
@@ -204,39 +208,76 @@ TGCard{12} = poly2trellis(vCard{12},[6 5 7]);
 
 %g13
 vCard{13} = 7;
-GCard{13} = poly2trellis(vCard{13},[171 131]);
+polyCard{13} = [171 131];
+GCard{13} = poly2trellis(vCard{13},polyCard{13});
 nCard{13} = 2;
 kCard{13} = 1;
 tCard{13} = 1;
 TGCard{13} = poly2trellis(vCard{13},[171 131]);
-
+HCard{13} = [131 171];
+h1Card{13} = [1 15300];
 
 %g14
 vCard{14} = 4;
-GCard{14} = poly2trellis(vCard{14},[13 15 17]);
+polyCard{14} = [13 15 17];
+GCard{14} = poly2trellis(vCard{14},polyCard{14});
 nCard{14} = 3;
 kCard{14} = 1;
 tCard{14} = 1;
 TGCard{14} = poly2trellis(vCard{14},[13 15 17]);
-
+HCard{14} = [15 13 0; 17 0 13];
+h1Card{14} = [1 54];
 
 %g15
 vCard{15} = 5;
-GCard{15} = poly2trellis(vCard{15},[25 33 37]);
+polyCard{15} = [25 33 37];
+GCard{15} = poly2trellis(vCard{15}, polyCard{15});
 nCard{15} = 3;
 kCard{15} = 1;
 tCard{15} = 1;
 TGCard{15} = poly2trellis(vCard{15},[25 33 37]);
+HCard{15} = [33 25 0;37 0 25];
+h1Card{15} = [1 212 382 431];
 
+%g16
+vCard{16} = 6;
+polyCard{16} = [45 53 67 77];
+GCard{16} = poly2trellis(vCard{16}, polyCard{16});
+nCard{16} = 4;
+kCard{16} = 1;
+tCard{16} = 1;
+TGCard{16} = poly2trellis(vCard{16},[45 53 67 77]);
+HCard{16} = [53 45 0 0;67 0 45 0;77 0 0 45];
 
+%g17
+vCard{17} = 5;
+polyCard{17} = [33 25 37 31];
+GCard{17} = poly2trellis(vCard{17},polyCard{17});
+nCard{17} = 4;
+kCard{17} = 1;
+tCard{17} = 1;
+TGCard{17} = poly2trellis(vCard{17},[33 25 37 31]);
+HCard{17} = [25 33 0 0;37 0 33 0;31 0 0 33];
+h1Card{17} = [1 96 150 203];
+
+%g18
+vCard{18} = [2 2 3];
+GCard{18} = poly2trellis(vCard{18},[1 3 1 3; 3 2 1 0; 0 0 5 7]);
+nCard{18} = 4;
+kCard{18} = 3;
+tCard{18} = 1;
+TGCard{18} = poly2trellis(vCard{18},[1 3 1 3; 3 2 1 0; 0 0 5 7]);
 
 %% ´æ´¢
 GeneratorCard.vCard = vCard;
+GeneratorCard.polyCard = polyCard;
 GeneratorCard.GCard = GCard;
 GeneratorCard.nCard = nCard;
 GeneratorCard.kCard = kCard;
 GeneratorCard.tCard = tCard;
 GeneratorCard.TGCard = TGCard;
+GeneratorCard.HCard = HCard;
+GeneratorCard.h1Card = h1Card;
 
 save GeneratorCard.mat GeneratorCard
 
