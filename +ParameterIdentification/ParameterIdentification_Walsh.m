@@ -12,7 +12,7 @@ tCard = GeneratorCard.tCard;
 TGCard = GeneratorCard.TGCard;
 
 %% 统一定义 
-selected = 1;
+selected = 13;
 v  = vCard{selected};
 g  = GCard{selected};
 gt = TGCard{selected};
@@ -22,7 +22,7 @@ t  = tCard{selected};
 %sNum = 10 * k; % 同步头长度
 tblen = max(max(v)); %最大记忆深度
 sNum = 10 * k; % 同步头长度
-testNumber = 10000;
+testNumber = 10;
 u = sum(v)-numel(v);
 n_alpha = n*floor(u/(n-k)+1);
 
@@ -54,7 +54,7 @@ for iterr = 0:ErrorSamplingNum
         r = c(startnum:endnum);
 
         %识别
-        [n_estimate, k_estimate, u_estimate] = ParameterIdentification.identify_Walsh(r, 0.16);
+        [n_estimate, k_estimate, u_estimate] = ParameterIdentification.identify_Walsh(r);
 
         if n_estimate ~= n
             Errorn(iterr + 1) = Errorn(iterr + 1) + 1;

@@ -13,8 +13,8 @@ if nargin < 3
 end
 testNumber = 18;
 if nargin < 2
-    load +ParameterIdentification/thresholdParameter001.mat thresholdParameter001
-    threshold = thresholdParameter001.thresholdParameter001 / sqrt(rowNumber);
+    load +ParameterIdentification/thresholdParameter0001.mat thresholdParameter0001
+    threshold = thresholdParameter0001 / sqrt(rowNumber);
 else
     threshold = threshold*ones(1,testNumber);
 end
@@ -52,10 +52,14 @@ for itern = 6:testNumber
             if rem(n_alpha,n) ~= 0
                 continue
             end
-            rank_Rl2 = itern - round(log2(Dimension(itern)));
-            rank_Rl1 = index_flag - round(log2(Dimension(index_flag)));
-            k = rank_Rl2 - rank_Rl1;
-            u = rank_Rl1 - n_alpha * k / n;
+            % rank_Rl2 = itern - round(log2(Dimension(itern)));
+            % rank_Rl1 = index_flag - round(log2(Dimension(index_flag)));
+            % k = rank_Rl2 - rank_Rl1;
+            % u = rank_Rl1 - n_alpha * k / n;
+            rank_Rl2 = itern - log2(Dimension(itern));
+            rank_Rl1 = index_flag - log2(Dimension(index_flag));
+            k = round(rank_Rl2 - rank_Rl1);
+            u = round(rank_Rl1) - n_alpha * k / n;
             return
         end
     end

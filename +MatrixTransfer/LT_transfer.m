@@ -111,8 +111,8 @@ else
         if ~G(iter1, iter1)
             pp = find(G(iter1, iter1 : end));%注意找到的是相对位置
             if any(pp)
-                G(:,[iter1, iter1 + pp(1) - 1]) = G(:,[iter1 + pp(1) - 1, iter1]);
-                B([iter1, iter1 + pp(1) - 1],:) = B([iter1 + pp(1) - 1, iter1],:);
+                G(:, [iter1, iter1 + pp(1) - 1]) = G(:, [iter1 + pp(1) - 1, iter1]);
+                B(:, [iter1, iter1 + pp(1) - 1]) = B(:, [iter1 + pp(1) - 1, iter1]);
             else
                 qq = find(G(iter1 : end, iter1));
                 if ~any(qq)
@@ -121,14 +121,12 @@ else
                 G([iter1, iter1 + qq(1) - 1], :) = G([iter1 + qq(1) - 1, iter1], :);
             end
         end
-        
         for iter2 = iter1 + 1 : l
             if G(iter1, iter2) == 1
                 G(:, iter2) = xor(G(:, iter2), G(:, iter1));
                 B(:, iter2) = xor(B(:, iter2), B(:, iter1));
             end
         end
-        
     end
     
     

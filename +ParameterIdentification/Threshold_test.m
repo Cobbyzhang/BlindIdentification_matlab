@@ -98,16 +98,18 @@ Error = Error / testNumber;
 
 
 %% »æÍ¼
-th = defualtThreshold + Iterval * (0:ErrorSamplingNum);
+
+th = rowNumber * (defualtThreshold + Iterval * (0:ErrorSamplingNum));
+%th = defualtThreshold + Iterval * (0:ErrorSamplingNum);
 T = normcdf(th * sqrt(rowNumber)).^(2^n_alpha / numel(h1) - 1);
 T1 = normcdf(th * sqrt(rowNumber)).^(2^n_alpha - numel(h1));
 % T0 = 1 - (1 - normcdf(th*sqrt(rowNumber))) * 2^n_alpha;
 
 figure(1)
 hold on
-plot(th, 1 - Error, 'k');
-plot(th, T,'b');
-plot(th, T1,'--r');
+plot(th, Error, 'k');
+plot(th, 1 - T,'b');
+%plot(th, T1,'--r');
 axis([defualtThreshold defualtThreshold + Iterval * ErrorSamplingNum 0 1]);
 % plot(th, T0, 'r');
 hold off
