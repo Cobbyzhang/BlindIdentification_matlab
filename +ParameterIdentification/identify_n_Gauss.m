@@ -19,10 +19,11 @@ MaxN = 30; % 尝试的n的最大值
 maxN = min(floor(sqrt(size(r, 2))), MaxN); % 行数大于列数就没意义了
 
 
-Z_l = zeros(1, maxN); % 
-H = cell(MaxN);
-for itern = 2:maxN  %l表示当前列数
-    for iteri = 1 : iteration
+
+for iteri = 1 : iteration
+    Z_l = zeros(1, maxN);
+    H = cell(MaxN);
+    for itern = 2:maxN  %l表示当前列数
         R_noiseless = Tool.reshapeMatrixWithColumn(c,itern);
         rowNumber = min(size(R_noiseless, 1), defaultRowNumber + itern); % L表示当前行数
         decision = (rowNumber - itern) * gammaOpt / 2; % 判决门限
@@ -44,6 +45,10 @@ for itern = 2:maxN  %l表示当前列数
             Z_l(itern) = Z_l(itern) + nnz(N);  % Number of nonzero matrix elements，也就是；列数为l时，有多少个线性组合的列
             H{itern} = B(:, N);
         end
+    end
+    f = find(Z_l > 0); % 找到所有导致线性相关的l，这说明l此时为n的倍数
+    if numel(f)>=2
+        break;
     end
 end
 

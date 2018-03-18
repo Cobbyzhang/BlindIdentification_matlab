@@ -14,7 +14,7 @@ HCard = GeneratorCard.HCard;
 polyCard = GeneratorCard.polyCard;
 
 %% 统一定义 (就不要修改后面的代码了)
-selected = 13;
+selected = 1;
 v  = vCard{selected};
 g  = GCard{selected};
 poly = polyCard{selected};
@@ -27,17 +27,17 @@ u = sum(v)-numel(v);
 n_alpha = n*floor(u/(n-k)+1);
 
 %% 测试参数
-ga = 0.2: 0.05 : 0.2;
-er = 0 : 0.01 : 0.06;
+ga = 0.2;
+er = 0 : 0.01 : 0.04;
 gammaSamplingNum = size(ga, 2);
 errorSamplingNum = size(er, 2);
-repetition = 10000;
+repetition = 100;
 testTimes =  errorSamplingNum * gammaSamplingNum * repetition;
 Error = zeros(1, testTimes);
 
 %% 算法参数
 rowNumber = 200;
-iteration = 1;
+iteration = 5;
 
 %% 并行计算参数设置
 workerNum = 24;
@@ -49,7 +49,7 @@ workerNum = 24;
 clc
 Tool.parfor_progress(testTimes);%并行运行
 % for iter = 1 : testTimes
-parfor iter = 1 : testTimes
+for iter = 1 : testTimes
     itere = ceil(iter / (repetition * gammaSamplingNum));
     errorRate = er(itere);
 %     iterg = ceil(iter / repetition) - (itere - 1) * gammaSamplingNum; 
@@ -105,7 +105,8 @@ clc;
 
 %% 后续处理及绘图
 ErrorMean = Tool.reshapeMatrixWithRow(sum(Tool.reshapeMatrixWithRow(Error, repetition)) / repetition, gammaSamplingNum);
-plot(er,1 - min(ErrorMean));
+%plot(er,1 - min(ErrorMean));
+plot(er,1 - ErrorMean);
 axis([er(1) er(end) 0 1]);
 
 

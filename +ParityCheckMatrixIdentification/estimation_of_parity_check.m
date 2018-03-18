@@ -1,4 +1,4 @@
-function [ parityCheckMatrix ] = estimation_of_parity_check(r, n, k, u, gammaOpt, rowNumber)
+function [ parityCheckMatrix ] = estimation_of_parity_check(r, n, k, u, rowNumber, gammaOpt)
 %
 
 
