@@ -36,7 +36,8 @@ for iteri = 1 : iteration
         R_temp = R(1:itern, :);
         R(1:itern, :) = R(permutation, :);
         R(permutation, :) = R_temp;
-%         R = ParameterIdentification.EliminateUpperDiagnolNoise(R, R_noiseless(permutation, :)); % 去掉上三角噪声，有部分文献需要
+%         R = ParameterIdentification.EliminateUpperDiagnolNoise(R,
+%         R_noiseless(permutation, :)); % 去掉上三角噪声，有部分文献需要
         [G, B] = MatrixTransfer.LT_transfer(R,4); % 分解
         N_l = sum(G(itern + 1 : end, :), 1); % 每一列的1的个数，当某一列1的个数小于门限时，认为这一列是其他列的线性组合
         N = find(N_l <= decision);
@@ -48,7 +49,6 @@ for iteri = 1 : iteration
     f = find(Z_l > 0); % 找到所有导致线性相关的l，这说明l此时为n的倍数
     if numel(f)>=2
         n = mode(diff(f),2);
-        % n = f(2)-f(1);
         degree = MaxN;
         for iter = 1 : numel(f)
             h = H{f(iter)};
@@ -59,32 +59,23 @@ for iteri = 1 : iteration
                 end
             end
         end
-        if degree < MaxN
-            n_alpha = n * degree;
-            if n~=3
-                disp(f)
-            end
-            return
-        end
+        if d
+        n_alpha = n * degree;
     end
 end
 
-
-n = 0;
-n_alpha = 0;
-disp(f)
 %% 找到n 
-% f = find(Z_l > 0); % 找到所有导致线性相关的l，这说明l此时为n的倍数
-% if numel(f)<2
-%     n = 0;
-%     n_alpha = 0;
-%     return
-% end
-% n = mode(diff(f),2);
+f = find(Z_l > 0); % 找到所有导致线性相关的l，这说明l此时为n的倍数
+if numel(f)<2
+    n = 0;
+    n_alpha = 0;
+    return
+end
+n = mode(diff(f),2);
 % n = f(2)-f(1); % 原始方法，找到前两个就判断
-% if n~=3
-%     disp(num2str(f));
-% end
+if n~=3
+    disp(num2str(f));
+end
 %% 识别n_alpha
 
 % n_alpha = f(1);  % 错误方法，用第一个判断严重影响正确率

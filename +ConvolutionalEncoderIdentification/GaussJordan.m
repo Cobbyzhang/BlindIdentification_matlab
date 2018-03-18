@@ -28,7 +28,7 @@ n_alpha = n*floor(u/(n-k)+1);
 
 %% 测试参数
 ga = 0.2;
-er = 0 : 0.01 : 0.04;
+er = 0.02 : 0.01 : 0.04;
 gammaSamplingNum = size(ga, 2);
 errorSamplingNum = size(er, 2);
 repetition = 100;
@@ -37,7 +37,7 @@ Error = zeros(1, testTimes);
 
 %% 算法参数
 rowNumber = 200;
-iteration = 5;
+iteration = 10;
 
 %% 并行计算参数设置
 workerNum = 24;
@@ -76,7 +76,7 @@ for iter = 1 : testTimes
     [n_estimate, n_alpha_estimate] = ParameterIdentification.identify_n_Gauss(c1(startnum:endnum), r, iteration, rowNumber, gamma);
     if n_estimate ~= n || n_alpha_estimate ~= n_alpha
         Error(iter) = 1;
-        Tool.parfor_progress;
+%         Tool.parfor_progress;
         continue;
     end
     
@@ -97,11 +97,11 @@ for iter = 1 : testTimes
         Error(iter) = 1;
     end
 
-    Tool.parfor_progress;
+%     Tool.parfor_progress;
 end
-Tool.parfor_progress(0);
+% Tool.parfor_progress(0);
 % delete(PCT);
-clc;
+
 
 %% 后续处理及绘图
 ErrorMean = Tool.reshapeMatrixWithRow(sum(Tool.reshapeMatrixWithRow(Error, repetition)) / repetition, gammaSamplingNum);

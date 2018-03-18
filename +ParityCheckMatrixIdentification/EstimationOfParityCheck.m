@@ -71,7 +71,7 @@ for iterr = 0:ErrorSamplingNum
         %parityMatrix = zeros(n-k, k+1);
 
         %% ¥¶¿Ì
-        parityCheckMatrix = ParityCheckMatrixIdentification.estimation_of_parity_check(r, n, k, u, gammaOpt);
+        parityCheckMatrix = ParityCheckMatrixIdentification.estimation_of_parity_check(r, n, k, u, rowNumber, gammaOpt);
         if any(parityCheckMatrix < 0) || ~ParityCheckMatrixIdentification.isNullSpace(v, poly, (u+1)*ones(1,n-k), parityCheckMatrix)
             Error(iterr + 1) = Error(iterr + 1) + 1;
         end
