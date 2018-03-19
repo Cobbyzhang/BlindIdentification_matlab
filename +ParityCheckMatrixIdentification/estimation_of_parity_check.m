@@ -56,7 +56,7 @@ for iters = 1 : n - k
 end
 
 
-if ~any(sum(parityCheckMatrix))
+if any(sum(parityCheckMatrix, 2)==0)
     parityCheckMatrix = -1 * ones(n - k, n);
 end
 

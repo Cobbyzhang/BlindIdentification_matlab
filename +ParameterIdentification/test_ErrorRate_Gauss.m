@@ -23,21 +23,21 @@ u = sum(v)-numel(v);
 n_alpha = n*floor(u/(n-k)+1);
 
 %% 测试参数
-ga = 0.1: 0.05 : 0.7;
-er = 0 : 0.01 : 0.04;
+ga = 0.2: 0.05 : 0.2;
+er = 0.02 : 0.01 : 0.04;
 gammaSamplingNum = size(ga, 2);
 errorSamplingNum = size(er, 2);
-repetition = 1000;
+repetition = 100;
 testTimes =  errorSamplingNum * gammaSamplingNum * repetition;
 Error = zeros(1, testTimes);
 
 %% 算法参数
 rowNumber = 200;
-iteration = 1;
+iteration = 10;
 
 %% 并行计算参数设置
 workerNum = 24;
-PCT = parpool(workerNum);
+% PCT = parpool(workerNum);
 
 
 %% 识别率-误码率曲线
@@ -45,13 +45,13 @@ PCT = parpool(workerNum);
 clc
 Tool.parfor_progress(testTimes);%并行运行
 
-%for iter = 1 : testTimes
-parfor iter = 1 : testTimes
+for iter = 1 : testTimes
+%parfor iter = 1 : testTimes
     itere = ceil(iter / (repetition * gammaSamplingNum));
     errorRate = er(itere);
-    iterg = ceil(iter / repetition) - (itere - 1) * gammaSamplingNum; 
-    gamma = ga(iterg);
-    
+%     iterg = ceil(iter / repetition) - (itere - 1) * gammaSamplingNum; 
+%     gamma = ga(iterg);
+    gamma = 2 * ParameterIdentification.optimal_gamma(errorRate, rowNumber);
     % 生成码字b1 & c1
     K= 20000;
     b1 = round(rand(1,K));
@@ -72,17 +72,18 @@ parfor iter = 1 : testTimes
     if n_estimate ~= n || n_alpha_estimate ~= n_alpha
         Error(iter) = 1;
     end
-    Tool.parfor_progress;
+%     Tool.parfor_progress;
 end
 Tool.parfor_progress(0);
-delete(PCT);
-clc;
+% delete(PCT);
+
 
 
 
 %% 后续处理及绘图
 ErrorMean = Tool.reshapeMatrixWithRow(sum(Tool.reshapeMatrixWithRow(Error, repetition)) / repetition, gammaSamplingNum);
-plot(er,1 - min(ErrorMean));
+%plot(er,1 - min(ErrorMean));
+plot(er,1 - ErrorMean);
 axis([er(1) er(end) 0 1]);
 
 %save(['+data\\C322_Gauss_',num2str(iteration),'_iteration.mat'])

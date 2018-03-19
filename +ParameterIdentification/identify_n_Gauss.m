@@ -61,9 +61,9 @@ for iteri = 1 : iteration
         end
         if degree < MaxN
             n_alpha = n * degree;
-            if n~=3
-                disp(f)
-            end
+%             if n~=3
+%                 disp(f)
+%             end
             return
         end
     end
@@ -72,7 +72,7 @@ end
 
 n = 0;
 n_alpha = 0;
-disp(f)
+% disp(f)
 %% 找到n 
 % f = find(Z_l > 0); % 找到所有导致线性相关的l，这说明l此时为n的倍数
 % if numel(f)<2

@@ -21,6 +21,12 @@ for iterk = 1 : n - 1
     end
 end
 
+for iter = SIZE : -1 : 1
+    if u(iter) < k(iter) || u(iter) < n - k(iter)
+        k(iter) = [];
+        u(iter) = [];
+    end
+end
 
 end
 

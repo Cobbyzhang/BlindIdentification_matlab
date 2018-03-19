@@ -48,7 +48,7 @@ workerNum = 24;
 
 clc
 Tool.parfor_progress(testTimes);%并行运行
-% for iter = 1 : testTimes
+% parfor iter = 1 : testTimes
 for iter = 1 : testTimes
     itere = ceil(iter / (repetition * gammaSamplingNum));
     errorRate = er(itere);
@@ -73,33 +73,35 @@ for iter = 1 : testTimes
     r = c(startnum:endnum);
     
     %识别
-    [n_estimate, n_alpha_estimate] = ParameterIdentification.identify_n_Gauss(c1(startnum:endnum), r, iteration, rowNumber, gamma);
-    if n_estimate ~= n || n_alpha_estimate ~= n_alpha
-        Error(iter) = 1;
-%         Tool.parfor_progress;
-        continue;
-    end
-    
-    % 计算 k,u
-    [k_set, u_set] = ParameterIdentification.estimation_of_k_u(n_estimate,n_alpha_estimate);
-    total = size(k_set, 2);
+    for ii = 1:iteration
+        [n_estimate, n_alpha_estimate] = ParameterIdentification.identify_n_Gauss(c1(startnum:endnum), r, 1, rowNumber, gamma);
+        if n_estimate == 0 || n_alpha_estimate >= 30
+            continue;
+        end
 
-    %识别监督矩阵
-    for iterr = 1:total
-        parityCheckMatrix = ParityCheckMatrixIdentification.estimation_of_parity_check(r, n_estimate, k_set(iterr), u_set(iterr), rowNumber, gamma);
-        if rank(parityCheckMatrix) == n_estimate - k_set(iterr)
-            k_estimate = k_set(iterr);
-            u_estimate = u_set(iterr);
-            break
+        % 计算 k,u
+        [k_set, u_set] = ParameterIdentification.estimation_of_k_u(n_estimate,n_alpha_estimate);
+        total = size(k_set, 2);
+
+        %识别监督矩阵
+        for iterr = 1:total
+            parityCheckMatrix = ParityCheckMatrixIdentification.estimation_of_parity_check(r, n_estimate, k_set(iterr), u_set(iterr), rowNumber, gamma);
+            if rank(parityCheckMatrix) == n_estimate - k_set(iterr)
+                k_estimate = k_set(iterr);
+                u_estimate = u_set(iterr);
+                break
+            end
+        end
+        if  ~any(any(parityCheckMatrix < 0))
+            break;
         end
     end
-    if k_estimate ~= k || u_estimate ~= u || any(any(parityCheckMatrix < 0)) || ~ParityCheckMatrixIdentification.isNullSpace(v, poly, (u+1)*ones(1,n-k), parityCheckMatrix)
+    if n_estimate~=n || n_alpha_estimate ~= n_alpha || k_estimate ~= k || u_estimate ~= u || any(any(parityCheckMatrix < 0)) || ~ParityCheckMatrixIdentification.isNullSpace(v, poly, (u+1)*ones(1,n-k), parityCheckMatrix)
         Error(iter) = 1;
     end
-
-%     Tool.parfor_progress;
+    Tool.parfor_progress;
 end
-% Tool.parfor_progress(0);
+Tool.parfor_progress(0);
 % delete(PCT);
 
 
