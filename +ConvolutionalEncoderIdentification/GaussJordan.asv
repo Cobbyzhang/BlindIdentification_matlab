@@ -14,7 +14,7 @@ HCard = GeneratorCard.HCard;
 polyCard = GeneratorCard.polyCard;
 
 %% 统一定义 (就不要修改后面的代码了)
-selected = 14;
+selected = 1;
 v  = vCard{selected};
 g  = GCard{selected};
 poly = polyCard{selected};
@@ -28,7 +28,7 @@ n_alpha = n*floor(u/(n-k)+1);
 
 %% 测试参数
 ga = 0.2;
-er = 0 : 0.01 : 0.10;
+er = 0 : 0.01 : 0.04;
 gammaSamplingNum = size(ga, 2);
 errorSamplingNum = size(er, 2);
 repetition = 1000;
@@ -48,8 +48,8 @@ workerNum = 24;
 
 clc
 Tool.parfor_progress(testTimes);%并行运行
-parfor iter = 1 : testTimes
-% for iter = 1 : testTimes
+% parfor iter = 1 : testTimes
+for iter = 1 : testTimes
     itere = ceil(iter / (repetition * gammaSamplingNum));
     errorRate = er(itere);
 %     iterg = ceil(iter / repetition) - (itere - 1) * gammaSamplingNum; 
@@ -74,11 +74,13 @@ parfor iter = 1 : testTimes
     
     %识别
     for ii = 1:iteration
+        n_estimate = 0;
+        n_alpha_estimate = 0;
         k_estimate = 0;
         u_estimate = 0;
-        parityCheckMatrix = [];
+        
         [n_estimate, n_alpha_estimate] = ParameterIdentification.identify_n_Gauss(c1(startnum:endnum), r, 1, rowNumber, gamma);
-        if n_estimate == 0 || n_estimate == 1 || n_alpha_estimate >= 30
+        if n_estimate == 0 || n_alpha_estimate >= 30
             continue;
         end
 
@@ -95,11 +97,11 @@ parfor iter = 1 : testTimes
                 break
             end
         end
-        if  ~any(any(parityCheckMatrix < 0)) || ~ParityCheckMatrixIdentification.isAnErrorPropagationMatrix(ParityCheckMatrix)
+        if  ~any(any(parityCheckMatrix < 0))
             break;
         end
     end
-    if n_estimate~=n || n_alpha_estimate ~= n_alpha || k_estimate ~= k || u_estimate ~= u || any(any(parityCheckMatrix < 0)) || ~ParityCheckMatrixIdentification.isNullSpace(v, poly, (u+1)*ones(1,n-k), parityCheckMatrix)|| ParityCheckMatrixIdentification.isAnErrorPropagationMatrix(ParityCheckMatrix)
+    if n_estimate~=n || n_alpha_estimate ~= n_alpha || k_estimate ~= k || u_estimate ~= u || any(any(parityCheckMatrix < 0)) || ~ParityCheckMatrixIdentification.isNullSpace(v, poly, (u+1)*ones(1,n-k), parityCheckMatrix)
         Error(iter) = 1;
     end
     Tool.parfor_progress;
