@@ -92,11 +92,11 @@ for iter = 1 : testTimes
                 break
             end
         end
-        if  ~any(any(parityCheckMatrix < 0))
+        if  ~any(any(parityCheckMatrix < 0)) || ~ParityCheckMatrixIdentification.isAnErrorPropagationMatrix(ParityCheckMatrix)
             break;
         end
     end
-    if n_estimate~=n || n_alpha_estimate ~= n_alpha || k_estimate ~= k || u_estimate ~= u || any(any(parityCheckMatrix < 0)) || ~ParityCheckMatrixIdentification.isNullSpace(v, poly, (u+1)*ones(1,n-k), parityCheckMatrix)
+    if n_estimate~=n || n_alpha_estimate ~= n_alpha || k_estimate ~= k || u_estimate ~= u || any(any(parityCheckMatrix < 0)) || ~ParityCheckMatrixIdentification.isNullSpace(v, poly, (u+1)*ones(1,n-k), parityCheckMatrix)|| ParityCheckMatrixIdentification.isAnErrorPropagationMatrix(ParityCheckMatrix)
         Error(iter) = 1;
     end
     Tool.parfor_progress;
