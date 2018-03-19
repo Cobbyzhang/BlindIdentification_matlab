@@ -2,8 +2,8 @@ function [gcd] = gcdOverGF2(v,poly)
 % v是一个数
 % poly是一个八进制向量
 
-if size(poly,2) ~= 1 || numel(v) ~= 1 
-    errror('Parameter Error!!!!')
+if size(poly,1) ~= 1 || numel(v) ~= 1 
+    error('Parameter Error!!!!')
 end
     
 f = find(poly~=0);

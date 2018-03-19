@@ -14,7 +14,7 @@ HCard = GeneratorCard.HCard;
 polyCard = GeneratorCard.polyCard;
 
 %% 统一定义 (就不要修改后面的代码了)
-selected = 14;
+selected = 1;
 v  = vCard{selected};
 g  = GCard{selected};
 poly = polyCard{selected};
@@ -28,7 +28,7 @@ n_alpha = n*floor(u/(n-k)+1);
 
 %% 测试参数
 ga = 0.2;
-er = 0 : 0.01 : 0.10;
+er = 0 : 0.01 : 0.06;
 gammaSamplingNum = size(ga, 2);
 errorSamplingNum = size(er, 2);
 repetition = 1000;
@@ -95,11 +95,11 @@ parfor iter = 1 : testTimes
                 break
             end
         end
-        if  ~any(any(parityCheckMatrix < 0)) || ~ParityCheckMatrixIdentification.isAnErrorPropagationMatrix(ParityCheckMatrix)
+        if  ~any(any(parityCheckMatrix < 0)) && ~ParityCheckMatrixIdentification.isAnErrorPropagationMatrix((u_estimate + 1)* ones(1,n_estimate - k_estimate),parityCheckMatrix)
             break;
         end
     end
-    if n_estimate~=n || n_alpha_estimate ~= n_alpha || k_estimate ~= k || u_estimate ~= u || any(any(parityCheckMatrix < 0)) || ~ParityCheckMatrixIdentification.isNullSpace(v, poly, (u+1)*ones(1,n-k), parityCheckMatrix)|| ParityCheckMatrixIdentification.isAnErrorPropagationMatrix(ParityCheckMatrix)
+    if n_estimate~=n || n_alpha_estimate ~= n_alpha || k_estimate ~= k || u_estimate ~= u || any(any(parityCheckMatrix < 0)) || ~ParityCheckMatrixIdentification.isNullSpace(v, poly, (u+1)*ones(1,n-k), parityCheckMatrix)|| ParityCheckMatrixIdentification.isAnErrorPropagationMatrix((u+1)*ones(1,n-k), parityCheckMatrix)
         Error(iter) = 1;
     end
     Tool.parfor_progress;
