@@ -13,7 +13,7 @@ TGCard = GeneratorCard.TGCard;
 
 
 %% 统一定义 (就不要修改后面的代码了)
-selected = 1;
+selected = 13;
 v  = vCard{selected};
 g  = GCard{selected};
 gt = TGCard{selected};
@@ -23,17 +23,17 @@ t  = tCard{selected};
 %sNum = 10 * k; % 同步头长度
 tblen = max(max(v)); %最大记忆深度
 sNum = 10 * k; % 同步头长度
-errorRate = 0;
-testNumber = 18;
+errorRate = 0.01;
+testNumber = 20;
 
 
 %% 生成码字b1 & c1
 K= 30000;
 b1 = round(rand(1,K));
-%c1 = convenc(b1,g);
-H = [ 1 1 1 1 1 0 0; 1 1 0 1 0 1 0;1 0 1 1 0 0 1 ];
-b = Tool.reshapeMatrixWithRow(b1,size(H,1))';
-c1 = reshape(mod(b * H, 2)',1,[]);
+c1 = convenc(b1,g);
+%H = [ 1 1 1 1 1 0 0; 1 1 0 1 0 1 0;1 0 1 1 0 0 1 ];
+%b = Tool.reshapeMatrixWithRow(b1,size(H,1))';
+%c1 = reshape(mod(b * H, 2)',1,[]);
 
 
 
@@ -54,12 +54,12 @@ r = c(startnum:end - endnum);
 mostPossibleSolution = zeros(1,testNumber);
 Dimension = zeros(1,testNumber);
 detectionRate = 2/3;
-threshold = 0.15;
+threshold = 0.3;
 failTime = 0;
 index_flag = 0;
 hight_flag = 0;
 showOut = 0;
-defaultRowNumber = 200;
+defaultRowNumber = 1000;
 % average = zeros(1,testNumber);
 % MaxAverRate = zeros(1,testNumber);
 % T = zeros(1,testNumber);
@@ -98,7 +98,7 @@ for itern = 1:testNumber
     %mostPossibleSolution = max(max(Y(2:end)));
     disp(['l = ',num2str(itern),': ',num2str(mostPossibleSolution(itern))])
     % disp(mostPossibleSolution)
-    if itern == 7
+    if itern == 15
          figure(2)
          stem(Y,'Marker','none');
          hold on

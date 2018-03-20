@@ -32,8 +32,7 @@ for iters = 1 : n - k
             RR(1:iterl, :) = RR(permutation, :);
             RR(permutation, :) = R_t;
 
-            [~, B] =  MatrixTransfer.LT_transfer(RR(1:iterl, :)); 
-            G = mod(RR * B, 2);
+            [G, B] =  MatrixTransfer.LT_transfer(RR, 4); 
             N_l = sum(G(iterl + 1 : end, :), 1);
             
 
