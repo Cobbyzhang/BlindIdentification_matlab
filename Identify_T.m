@@ -70,7 +70,7 @@ for iterv = vMax:-1:vMin  %每次匹配vNum个x,xt向量
         break
     end
     if vNum > 0 %某一次运行完没有全部找到vNum个匹配，则出错
-        disp('Fail to identify T');
+        %disp('Fail to identify T');
         T = zeros(k);
         return
     end

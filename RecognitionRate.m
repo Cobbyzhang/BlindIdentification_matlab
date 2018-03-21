@@ -11,7 +11,7 @@ tCard = GeneratorCard.tCard;
 TGCard = GeneratorCard.TGCard;
 
 %% 统一定义 (就不要修改后面的代码了)
-selected = 11;
+selected = 2;
 v  = vCard{selected};
 g  = GCard{selected};
 gt = TGCard{selected};
@@ -21,10 +21,10 @@ t  = tCard{selected};
 %sNum = 10 * k; % 同步头长度
 tblen = max(max(v)); %最大记忆深度
 degT = max(max(v)) - min(min(v));
-repetition = 1000000;
+repetition = 100000;
 sNum = 1 : 18;
 sNumSampling = size(sNum, 2);
-Error = ones(repetition,sNumSampling);
+Error = zeros(repetition,sNumSampling);
 error_type_bug = 0; % 记录非1,2,3型错误的个数
 %% 测试识别率错误率
 % testTimes = 2^k * (2^(k * testNum) - 1)/(2^k - 1);
@@ -32,7 +32,7 @@ error_type_bug = 0; % 记录非1,2,3型错误的个数
 % for iter = 1:testNum
 %     ErrorSetCell{iter} = zeros(1,2^iter);
 % end
-testTimes = sNum * repetition;
+testTimes = repetition;
 % h = waitbar(0,'Please wait...','Name','Recognition Rate','CreateCancelBtn','setappdata(gcbf,''canceling'',1)');
 
 clc
@@ -45,18 +45,20 @@ parfor iter = 1:repetition
 %             break
 %         end
         snum = sNum(iters);
-        K= 40 * k - (snum * k);
+%         K= 40 * k - (snum * k);
+        K = 40 * k;
         b1 = round(rand(1,K));
-        firstblc = dec2bin(iter - 1,snum * k) - 48;
-        b = [firstblc, b1];
+%         firstblc = dec2bin(randi(2^(snum*k)) - 1,snum * k) - 48;
+%         b = [firstblc, b1];
+        b = b1(1:end-rem(length(b1),k));
         c1 = convenc(b, g);
         c = c1;
         startnum = 1;
-        endnum = randi([K-10,K],1);
-        r = c(startnum:endnum);
+        endnum = randi([1,10],1);
+        r = c(startnum:end - endnum);
         bt = vitdec(r(1:end-rem(length(r),n)),gt,tblen,'trunc','hard'); %威特比译码
         x = reshape(b(1:snum * k),k,[]);% 重排一下得到顺序
-        xt = reshape(bt(1:numel(x)),size(x));
+        xt = reshape(bt(1:numel(x)),size(x,1),size(x,2));
         T = Identify_T(x,xt,v); % 识别算法
         if ~isequal(T,t)
             Error(iter,iters) = 1;
@@ -83,7 +85,7 @@ end
 % ber = Error./2.^(k:k:testNum*k);
 Tool.parfor_progress(0);
 ErrorMean = sum(Tool.reshapeMatrixWithRow(Error, repetition)) / repetition;
-plot(sNum,1 - ErrorMean,'-k');
+semilogy(sNum,ErrorMean,'-k');
 axis([sNum(1) sNum(end) 0 1]);
 
 %% 处理错误信息
