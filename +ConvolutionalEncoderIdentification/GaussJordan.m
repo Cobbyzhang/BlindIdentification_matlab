@@ -14,7 +14,7 @@ HCard = GeneratorCard.HCard;
 polyCard = GeneratorCard.polyCard;
 
 %% 统一定义 (就不要修改后面的代码了)
-selected = 1;
+selected = 15;
 v  = vCard{selected};
 g  = GCard{selected};
 poly = polyCard{selected};
@@ -28,7 +28,7 @@ n_alpha = n*floor(u/(n-k)+1);
 
 %% 测试参数
 ga = 0.2;
-er = 0 : 0.01 : 0.06;
+er = 0 : 0.01 : 0.1;
 gammaSamplingNum = size(ga, 2);
 errorSamplingNum = size(er, 2);
 repetition = 1000;
@@ -36,7 +36,7 @@ testTimes =  errorSamplingNum * gammaSamplingNum * repetition;
 Error = zeros(1, testTimes);
 
 %% 算法参数
-rowNumber = 200;
+rowNumber = 1000;
 iteration = 10;
 
 %% 并行计算参数设置

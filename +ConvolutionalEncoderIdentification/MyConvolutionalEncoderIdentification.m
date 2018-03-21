@@ -26,18 +26,18 @@ H  = HCard{selected};
 %sNum = 10 * k; % 同步头长度
 tblen = max(max(v)); %最大记忆深度
 sNum = 10 * k; % 同步头长度
-testNumber = 10000;
+testNumber = 1000;
 rowNumber = 1000;
 u = sum(v)-numel(v);
 
 %%
 %% 识别率-误码率曲线
 h = waitbar(0,'Please wait...','Name','Recognition Rate','CreateCancelBtn','setappdata(gcbf,''canceling'',1)');
-ErrorSamplingNum = 14;
+ErrorSamplingNum = 18;
 Error = zeros(1,ErrorSamplingNum+1);
 testTimes = (ErrorSamplingNum + 1) * testNumber;
 exitFlag = 0;
-for iterr = 0:ErrorSamplingNum
+for iterr = 15:ErrorSamplingNum
     if exitFlag == 1
         break;
     end
@@ -93,6 +93,6 @@ hold off
 save(['+data/+Research2/+整体识别率/',num2str(k),'_',num2str(n),'_',num2str(u),'码_',num2str(testNumber),'.mat'], 'detRate')
 
 t = 0.01*(0:(size(detRate,2)-1));
-plot(t,detRate,'-+b');
+plot(t,detRate,'-*k');
 
 
