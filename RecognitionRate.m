@@ -86,7 +86,7 @@ end
 Tool.parfor_progress(0);
 ErrorMean = sum(Tool.reshapeMatrixWithRow(Error, repetition)) / repetition;
 semilogy(sNum,ErrorMean,'-k');
-axis([sNum(1) sNum(end) 0 1]);
+axis([0 sNum(end) 0 1]);
 
 %% 处理错误信息
 % ErrorSetCell = arrayfun(@(x,y)dec2bin(find(x{:})-1,y),ErrorSetCell,2*(1:testNum),'un',0);
