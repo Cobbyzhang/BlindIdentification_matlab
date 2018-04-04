@@ -13,7 +13,7 @@ TGCard = GeneratorCard.TGCard;
 
 
 %% 统一定义 (就不要修改后面的代码了)
-selected = 13;
+selected = 14;
 v  = vCard{selected};
 g  = GCard{selected};
 gt = TGCard{selected};
@@ -23,7 +23,7 @@ t  = tCard{selected};
 %sNum = 10 * k; % 同步头长度
 tblen = max(max(v)); %最大记忆深度
 sNum = 10 * k; % 同步头长度
-errorRate = 0.01;
+errorRate = 0.05;
 testNumber = 20;
 
 
@@ -98,7 +98,7 @@ for itern = 1:testNumber
     %mostPossibleSolution = max(max(Y(2:end)));
     disp(['l = ',num2str(itern),': ',num2str(mostPossibleSolution(itern))])
     % disp(mostPossibleSolution)
-    if itern == 15
+    if itern == 6
          figure(2)
          stem(Y,'Marker','none');
          hold on
