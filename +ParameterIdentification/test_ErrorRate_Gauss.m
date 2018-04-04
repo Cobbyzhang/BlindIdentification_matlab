@@ -12,7 +12,7 @@ tCard = GeneratorCard.tCard;
 TGCard = GeneratorCard.TGCard;
 
 %% 统一定义 (就不要修改后面的代码了)
-selected = 1;
+selected = 17;
 v  = vCard{selected};
 g  = GCard{selected};
 gt = TGCard{selected};
@@ -23,8 +23,8 @@ u = sum(v)-numel(v);
 n_alpha = n*floor(u/(n-k)+1);
 
 %% 测试参数
-ga = 0.2: 0.05 : 0.2;
-er = 0.02 : 0.01 : 0.04;
+ga = 0.2: 0.05 : 0.7;
+er = 0.08 : 0.01 : 0.12;
 gammaSamplingNum = size(ga, 2);
 errorSamplingNum = size(er, 2);
 repetition = 100;
@@ -45,13 +45,13 @@ workerNum = 24;
 clc
 Tool.parfor_progress(testTimes);%并行运行
 
-for iter = 1 : testTimes
-%parfor iter = 1 : testTimes
+%for iter = 1 : testTimes
+parfor iter = 1 : testTimes
     itere = ceil(iter / (repetition * gammaSamplingNum));
     errorRate = er(itere);
-%     iterg = ceil(iter / repetition) - (itere - 1) * gammaSamplingNum; 
-%     gamma = ga(iterg);
-    gamma = 2 * ParameterIdentification.optimal_gamma(errorRate, rowNumber);
+    iterg = ceil(iter / repetition) - (itere - 1) * gammaSamplingNum; 
+    gamma = ga(iterg);
+%     gamma = 2 * ParameterIdentification.optimal_gamma(errorRate, rowNumber);
     % 生成码字b1 & c1
     K= 20000;
     b1 = round(rand(1,K));
@@ -72,7 +72,7 @@ for iter = 1 : testTimes
     if n_estimate ~= n || n_alpha_estimate ~= n_alpha
         Error(iter) = 1;
     end
-%     Tool.parfor_progress;
+    Tool.parfor_progress;
 end
 Tool.parfor_progress(0);
 % delete(PCT);
@@ -82,8 +82,8 @@ Tool.parfor_progress(0);
 
 %% 后续处理及绘图
 ErrorMean = Tool.reshapeMatrixWithRow(sum(Tool.reshapeMatrixWithRow(Error, repetition)) / repetition, gammaSamplingNum);
-%plot(er,1 - min(ErrorMean));
-plot(er,1 - ErrorMean);
+plot(er,1 - min(ErrorMean));
+%plot(er,1 - ErrorMean);
 axis([er(1) er(end) 0 1]);
 
 %save(['+data\\C322_Gauss_',num2str(iteration),'_iteration.mat'])

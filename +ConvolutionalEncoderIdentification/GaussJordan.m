@@ -14,7 +14,7 @@ HCard = GeneratorCard.HCard;
 polyCard = GeneratorCard.polyCard;
 
 %% 统一定义 (就不要修改后面的代码了)
-selected = 15;
+selected = 17;
 v  = vCard{selected};
 g  = GCard{selected};
 poly = polyCard{selected};
@@ -27,11 +27,11 @@ u = sum(v)-numel(v);
 n_alpha = n*floor(u/(n-k)+1);
 
 %% 测试参数
-ga = 0.2;
-er = 0 : 0.01 : 0.1;
+ga = 0.2:0.05:0.7;
+er = 0 : 0.01 : 0.05;
 gammaSamplingNum = size(ga, 2);
 errorSamplingNum = size(er, 2);
-repetition = 1000;
+repetition = 100;
 testTimes =  errorSamplingNum * gammaSamplingNum * repetition;
 Error = zeros(1, testTimes);
 
@@ -48,13 +48,13 @@ workerNum = 24;
 
 clc
 Tool.parfor_progress(testTimes);%并行运行
-parfor iter = 1 : testTimes
-% for iter = 1 : testTimes
+% parfor iter = 1 : testTimes
+for iter = 1 : testTimes
     itere = ceil(iter / (repetition * gammaSamplingNum));
     errorRate = er(itere);
-%     iterg = ceil(iter / repetition) - (itere - 1) * gammaSamplingNum; 
-%     gamma = ga(iterg);
-     gamma = 2 * ParameterIdentification.optimal_gamma(errorRate, rowNumber);
+    iterg = ceil(iter / repetition) - (itere - 1) * gammaSamplingNum; 
+    gamma = ga(iterg);
+%      gamma = 2 * ParameterIdentification.optimal_gamma(errorRate, rowNumber);
     
     
     % 生成码字b1 & c1
@@ -89,17 +89,19 @@ parfor iter = 1 : testTimes
         %识别监督矩阵
         for iterr = 1:total
             parityCheckMatrix = ParityCheckMatrixIdentification.estimation_of_parity_check(r, n_estimate, k_set(iterr), u_set(iterr), rowNumber, gamma);
-            if rank(parityCheckMatrix) == n_estimate - k_set(iterr)
+            if rank(parityCheckMatrix) == n_estimate - k_set(iterr) 
                 k_estimate = k_set(iterr);
                 u_estimate = u_set(iterr);
                 break
             end
         end
-        if  ~any(any(parityCheckMatrix < 0)) && ~ParityCheckMatrixIdentification.isAnErrorPropagationMatrix((u_estimate + 1)* ones(1,n_estimate - k_estimate),parityCheckMatrix)
+%         if  ~any(any(parityCheckMatrix < 0)) && ~ParityCheckMatrixIdentification.isAnErrorPropagationMatrix((u_estimate + 1)* ones(1,n_estimate - k_estimate),parityCheckMatrix)
+        if  ~any(any(parityCheckMatrix < 0))
             break;
         end
     end
-    if n_estimate~=n || n_alpha_estimate ~= n_alpha || k_estimate ~= k || u_estimate ~= u || any(any(parityCheckMatrix < 0)) || ~ParityCheckMatrixIdentification.isNullSpace(v, poly, (u+1)*ones(1,n-k), parityCheckMatrix)|| ParityCheckMatrixIdentification.isAnErrorPropagationMatrix((u+1)*ones(1,n-k), parityCheckMatrix)
+%     if n_estimate~=n || n_alpha_estimate ~= n_alpha || k_estimate ~= k || u_estimate ~= u || any(any(parityCheckMatrix < 0)) || ~ParityCheckMatrixIdentification.isNullSpace(v, poly, (u+1)*ones(1,n-k), parityCheckMatrix)|| ParityCheckMatrixIdentification.isAnErrorPropagationMatrix((u+1)*ones(1,n-k), parityCheckMatrix)
+    if n_estimate~=n || n_alpha_estimate ~= n_alpha || k_estimate ~= k || any(any(parityCheckMatrix < 0)) || ~ParityCheckMatrixIdentification.isNullSpace(v, poly, (u+1)*ones(1,n-k), parityCheckMatrix)
         Error(iter) = 1;
     end
     Tool.parfor_progress;
