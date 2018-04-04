@@ -15,7 +15,7 @@ end
 
 
 %% 生成截断矩阵 r -> R
-MaxN = 30; % 尝试的n的最大值
+MaxN = 25; % 尝试的n的最大值
 maxN = min(floor(sqrt(size(r, 2))), MaxN); % 行数大于列数就没意义了
 
 
