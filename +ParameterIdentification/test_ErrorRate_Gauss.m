@@ -12,7 +12,7 @@ tCard = GeneratorCard.tCard;
 TGCard = GeneratorCard.TGCard;
 
 %% 统一定义 (就不要修改后面的代码了)
-selected = 17;
+selected = 13;
 v  = vCard{selected};
 g  = GCard{selected};
 gt = TGCard{selected};
@@ -24,15 +24,15 @@ n_alpha = n*floor(u/(n-k)+1);
 
 %% 测试参数
 ga = 0.2: 0.05 : 0.7;
-er = 0.08 : 0.01 : 0.12;
+er = 0 : 0.01 : 0.06;
 gammaSamplingNum = size(ga, 2);
 errorSamplingNum = size(er, 2);
-repetition = 100;
+repetition = 1000;
 testTimes =  errorSamplingNum * gammaSamplingNum * repetition;
 Error = zeros(1, testTimes);
 
 %% 算法参数
-rowNumber = 200;
+rowNumber = 1000;
 iteration = 10;
 
 %% 并行计算参数设置
@@ -49,9 +49,9 @@ Tool.parfor_progress(testTimes);%并行运行
 parfor iter = 1 : testTimes
     itere = ceil(iter / (repetition * gammaSamplingNum));
     errorRate = er(itere);
-    iterg = ceil(iter / repetition) - (itere - 1) * gammaSamplingNum; 
-    gamma = ga(iterg);
-%     gamma = 2 * ParameterIdentification.optimal_gamma(errorRate, rowNumber);
+%     iterg = ceil(iter / repetition) - (itere - 1) * gammaSamplingNum; 
+%     gamma = ga(iterg);
+    gamma = 2 * ParameterIdentification.optimal_gamma(errorRate, rowNumber);
     % 生成码字b1 & c1
     K= 20000;
     b1 = round(rand(1,K));
