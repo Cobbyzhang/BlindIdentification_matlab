@@ -12,7 +12,7 @@ tCard = GeneratorCard.tCard;
 TGCard = GeneratorCard.TGCard;
 
 %% 统一定义 
-selected = 1;
+selected = 17;
 v  = vCard{selected};
 g  = GCard{selected};
 gt = TGCard{selected};
@@ -26,9 +26,9 @@ u = sum(v)-numel(v);
 n_alpha = n*floor(u/(n-k)+1);
 
 %% 测试参数
-er = 0 : 0.01 : 0.12;
+er = 0 : 0.01 : 0.18;
 errorSamplingNum = size(er, 2);
-repetition = 1000;
+repetition = 10000;
 testTimes =  errorSamplingNum * repetition;
 Error = zeros(1, testTimes);
 Errorn = zeros(1,testTimes);
