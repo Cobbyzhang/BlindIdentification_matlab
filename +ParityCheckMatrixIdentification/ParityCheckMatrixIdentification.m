@@ -14,7 +14,7 @@ HCard = GeneratorCard.HCard;
 polyCard = GeneratorCard.polyCard;
 
 %% 统一定义 (就不要修改后面的代码了)
-selected = 17;
+selected = 19;
 v  = vCard{selected};
 g  = GCard{selected};
 poly = polyCard{selected};
@@ -26,14 +26,14 @@ H  = HCard{selected};
 %sNum = 10 * k; % 同步头长度
 tblen = max(max(v)); %最大记忆深度
 sNum = 10 * k; % 同步头长度
-testNumber = 100;
+testNumber = 10;
 rowNumber = 1000;
 u = sum(v)-numel(v);
 
 %%
 %% 识别率-误码率曲线
 h = waitbar(0,'Please wait...','Name','Recognition Rate','CreateCancelBtn','setappdata(gcbf,''canceling'',1)');
-ErrorSamplingNum = 14;
+ErrorSamplingNum = 20;
 Error = zeros(1,ErrorSamplingNum+1);
 testTimes = (ErrorSamplingNum + 1) * testNumber;
 for iterr = 0:ErrorSamplingNum

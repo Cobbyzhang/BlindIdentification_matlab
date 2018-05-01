@@ -268,6 +268,16 @@ kCard{18} = 3;
 tCard{18} = 1;
 TGCard{18} = poly2trellis(vCard{18},[1 3 1 3; 3 2 1 0; 0 0 5 7]);
 
+%g19
+vCard{19} = 6;
+polyCard{19} = [45 53 67 77];
+GCard{19} = poly2trellis(vCard{19},polyCard{19});
+nCard{19} = 4;
+kCard{19} = 1;
+tCard{19} = 1;
+TGCard{19} = poly2trellis(vCard{19},[45 53 67 77]);
+HCard{19} = [53 45 0 0;67 0 45 0;77 0 0 45];
+%h1Card{19} = [1 96 150 203];
 %% ´æ´¢
 GeneratorCard.vCard = vCard;
 GeneratorCard.polyCard = polyCard;
