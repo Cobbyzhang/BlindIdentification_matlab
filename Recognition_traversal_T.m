@@ -1,20 +1,41 @@
 clc
 clear
 tic
+
+%% 载入测试码集合
+load GeneratorCard.mat
+vCard = GeneratorCard.vCard;
+GCard = GeneratorCard.GCard;
+nCard = GeneratorCard.nCard;
+kCard = GeneratorCard.kCard;
+tCard = GeneratorCard.tCard;
+TGCard = GeneratorCard.TGCard;
+polyCard = GeneratorCard.polyCard;
 %% 统一定义 (就不要修改后面的代码了)
-v  = [3,5];
-g  = poly2trellis(v,[5 2 7;2 35 20]);
-n  = 3;
-k  = 2;
-GD = poly2symmat(v,[5 2 7;2 35 20]);
+selected = 20;
+v  = vCard{selected};
+g  = GCard{selected};
+poly = polyCard{selected};
+gt = TGCard{selected};
+n  = nCard{selected};
+k  = kCard{selected};
+t  = tCard{selected};
+
+%% 统一定义 (就不要修改后面的代码了)
+% v  = [3,5];
+% g  = poly2trellis(v,[5 2 7;2 35 20]);
+% n  = 3;
+% k  = 2;
+% GD = poly2symmat(v,[5 2 7;2 35 20]);
+GD = poly2symmat(v,poly);
 tblen = max(max(v)); %最大记忆深度
 degT = max(max(v)) - min(min(v));
-testNum = 4;
+testNum = 10;
 error = ones(2^(degT+1),testNum);
 %% 测试识别率错误率
 testTimes = 2^k * (2^(k * testNum) - 1)/(2^k - 1) ;
 h = waitbar(0,'Please wait...','Name','Recognition Rate','CreateCancelBtn','setappdata(gcbf,''canceling'',1)');
-for tt = 0:2^(degT+1)-1
+for tt = 12:12%0:2^(degT+1)-1
     t = [1,0;tt,1];
     TD = num2symmat(t);
     [v_test,poly_test] = symmat2poly(mod(TD*GD,2));

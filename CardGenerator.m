@@ -142,8 +142,9 @@ TGCard{6} =poly2trellis(v6_test,poly6_test);
 
 %g7
 vCard{7} = [3,5];
-GCard{7} = poly2trellis(vCard{7},[5 2 7;2 35 20]);
-GD7 = poly2symmat(vCard{7},[5 2 7;2 35 20]);
+polyCard{7} = [5 2 7;2 35 20];
+GCard{7} = poly2trellis(vCard{7},polyCard{7});
+GD7 = poly2symmat(vCard{7},polyCard{7});
 nCard{7} = 3;
 kCard{7} = 2;
 tCard{7} = [1 0;5 1];
@@ -278,6 +279,20 @@ tCard{19} = 1;
 TGCard{19} = poly2trellis(vCard{19},[45 53 67 77]);
 HCard{19} = [53 45 0 0;67 0 45 0;77 0 0 45];
 %h1Card{19} = [1 96 150 203];
+
+%g20
+
+vCard{20} = [3,6];
+polyCard{20} = [4 6 1 5 2;24 61 42 70 41];
+GCard{20} = poly2trellis(vCard{20},polyCard{20});
+nCard{20} = 5;
+kCard{20} = 2;
+tCard{20} = [1 0;12 1];
+T20 = num2symmat(tCard{20});
+GD20 = poly2symmat(vCard{20},polyCard{20});
+[v20_test,poly20_test] = symmat2poly(mod(T20*GD20,2));
+%gt4 = poly2trellis(v4_test,poly4_test);
+TGCard{20} =poly2trellis(v20_test,poly20_test);
 %% ´æ´¢
 GeneratorCard.vCard = vCard;
 GeneratorCard.polyCard = polyCard;

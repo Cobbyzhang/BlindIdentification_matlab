@@ -13,7 +13,7 @@ TGCard = GeneratorCard.TGCard;
 
 
 %% 统一定义 (就不要修改后面的代码了)
-selected = 14;
+selected = 1;
 v  = vCard{selected};
 g  = GCard{selected};
 gt = TGCard{selected};
@@ -23,7 +23,7 @@ t  = tCard{selected};
 %sNum = 10 * k; % 同步头长度
 tblen = max(max(v)); %最大记忆深度
 sNum = 10 * k; % 同步头长度
-errorRate = 0.05;
+errorRate = 0.01;
 testNumber = 20;
 
 
@@ -54,12 +54,12 @@ r = c(startnum:end - endnum);
 mostPossibleSolution = zeros(1,testNumber);
 Dimension = zeros(1,testNumber);
 detectionRate = 2/3;
-threshold = 0.3;
+threshold = 0.25;
 failTime = 0;
 index_flag = 0;
 hight_flag = 0;
 showOut = 0;
-defaultRowNumber = 1000;
+defaultRowNumber = 200;
 % average = zeros(1,testNumber);
 % MaxAverRate = zeros(1,testNumber);
 % T = zeros(1,testNumber);
@@ -98,8 +98,8 @@ for itern = 1:testNumber
     %mostPossibleSolution = max(max(Y(2:end)));
     disp(['l = ',num2str(itern),': ',num2str(mostPossibleSolution(itern))])
     % disp(mostPossibleSolution)
-    if itern == 6
-         figure(2)
+    if itern == 12
+         figure(1)
          stem(Y,'Marker','none');
          hold on
          plot(1:2^itern,rowNumber*threshold*ones(1,2^itern));

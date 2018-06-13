@@ -8,12 +8,12 @@ kCard = GeneratorCard.kCard;
 tCard = GeneratorCard.tCard;
 
 %% 统一定义 (就不要修改后面的代码了)
-selected = 11;
+selected = 7;
 v  = vCard{selected};
 k  = kCard{selected};
 t  = tCard{selected};
 t_inv  = symmat2num(mod(inv(num2symmat(t)),2));
-testNum = 4;
+testNum = 7;
 error = ones(1,testNum);
 % error_type_bug = 0; % 记录非1,2,3型错误的个数
 %% 测试识别率错误率

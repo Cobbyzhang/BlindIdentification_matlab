@@ -12,7 +12,7 @@ tCard = GeneratorCard.tCard;
 TGCard = GeneratorCard.TGCard;
 
 %% 统一定义 (就不要修改后面的代码了)
-selected = 13;
+selected = 1;
 v  = vCard{selected};
 g  = GCard{selected};
 gt = TGCard{selected};
