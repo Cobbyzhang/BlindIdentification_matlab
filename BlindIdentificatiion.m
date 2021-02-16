@@ -43,7 +43,8 @@ c1 = convenc(b1,g1);
 %% c1 通过无（有）噪声信道 -> c
 
 %c = awgn(c1,3);
-c = c1;
+errorRate = 0;
+c = Tool.addErrorWithPossibility(c1,errorRate);
 
 %% 测试译码函数正确性
 % b1_test = vitdec(c,g1,3,'trunc','hard');
